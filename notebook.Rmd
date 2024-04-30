@@ -1,0 +1,62 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Load the lib (you might want to install it first).
+```{r}
+library(bibliometrix)   ### load bibliometrix package
+```
+
+Import the wos and scopus publication files.
+```{r}
+file_wos <- "wos_2018_2023.bib"
+file_scopus <- "scopus_2018_2024.bib"
+M_wos <- convert2df(file = file_wos, dbsource = "wos", format = "bibtex")
+M_scopus <- convert2df(file = file_scopus, dbsource = "scopus", format = "bibtex")
+```
+First bibliometric analysis:
+```{r}
+results_wos <- biblioAnalysis(M_wos, sep = ";")
+results_scopus <- biblioAnalysis(M_scopus, sep = ";")
+```
+
+```{r}
+plot(x = results_wos, k = 10, pause = FALSE)
+```
+
+```{r}
+CR <- citations(M_wos, field = "article", sep = ";")
+cbind(CR$Cited[1:10])
+A <- cocMatrix(M_wos, Field = "SO", sep = ";")
+sort(Matrix::colSums(A), decreasing = TRUE)[1:10]
+```
+```{r}
+A <- cocMatrix(M_wos, Field = "CR", sep = ".  ")
+sort(Matrix::colSums(A), decreasing = TRUE)[1:10]
+```
+
+
+```{r}
+# Create keyword co-occurrences network
+
+NetMatrix <- biblioNetwork(M_wos, analysis = "co-occurrences", network = "keywords", sep = ";")
+
+# Plot the network
+net=networkPlot(NetMatrix, normalize="association", weighted=T, n = 30, Title = "Keyword Co-occurrences", type = "fruchterman", size=T,edgesize = 5,labelsize=0.7)
+```
+
+
+```{r}
+# Conceptual Structure using keywords (method="CA")
+
+CS <- conceptualStructure(M_wos,field="ID", method="CA", minDegree=4, clust=5, stemming=FALSE, labelsize=10, documents=10)
+```
+
+```{r}
+# Create a historical citation network
+options(width=130)
+histResults <- histNetwork(M_wos, min.citations = 1, sep = ";")
+# Plot a historical co-citation network
+net <- histPlot(histResults, n=15, size = 20, labelsize=5)
+```
+
