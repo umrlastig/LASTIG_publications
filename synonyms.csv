@@ -1,36 +1,45 @@
-model,models,modeling,modelling
-image,imagery
-optimisation,optimization
-quality,quality assessment,quality control,data quality
-algorithm,algorithms
-fusion,data fusion
-remote sensing,remote-sensing,remote sensing data,optical remote sensing
-satellite,satellites,satellite data,satellite sensor,satellite images,satellite imagery
-random forest,random forests,random forest classifier
-radiometry,radiometrics
-image processing,image analysis,image,stereo image processing,image resolution,image enhancement
-classification,classification methods,classification (of information),image classification,classification algorithm
-time series,time series analysis,times series
-machine learning,machine-learning,learning systems,deep learning,supervised learning
-neural networks,recurrent neural networks,convolutional neural networks,artificial neural networks,artificial neural network,neural-networks,artificial intelligence
-displacement,displacement measurement
-land use/cover,land use,land cover,land cover mapping,land use and land cover,land cover maps
-mapping,maps,mapping method,map
-dataset,large dataset,data set,large datasets
-segmentation,image segmentation,semantic segmentation,instance segmentation,panoptic segmentation
-radar,optical radar,space-based radar,radar measurement,radar data,radar imaging,synthetic aperture radar
-reconstruction,image reconstruction,3d reconstruction
-sentinel,sentinel-1,sentinel-2
-gis,geographical information,geographical information systems,geographic information systems,geographic information
-digital humanities,computational humanities,computational humanity,heritage,digital heritage,cultural heritage,cultural heritages
-point cloud, 3d point cloud,point-clouds,lidar point clouds
-buildings,3d building models,bim
-image retrieval,cbir,content based retrieval
-clusterings,clustering algorithms
-urban development,urban environment,urban environments,urban planning,urban morphology
-city model,city information model
-surface reconstruction,surfaces reconstruction
-visualisation,visualization,data visualization,geo visualization,geo visualizations
-global positioning system,global navigation positioning system,global navigation satellite systems
-3d,3d modeling,three dimensional computer graphics
-information systems,information management,information use
+model,models,modeling,modelling,,,,,,,,,
+image,imagery,,,,,,,,,,,
+optimisation,optimization,,,,,,,,,,,
+quality,quality assessment,quality control,data quality,,,,,,,,,
+algorithm,algorithms,,,,,,,,,,,
+fusion,data fusion,,,,,,,,,,,
+remote sensing,remote-sensing,remote sensing data,optical remote sensing,remote,remote-sensing imagery,remote-sensing techniques,remote-sensing data,remote sensing images,radar remote sensing,,,
+satellite,satellites,satellite data,satellite sensor,satellite images,satellite imagery,,,,,,,
+random forest,random forests,random forest classifier,random forest classification,,,,,,,,,
+radiometry,radiometrics,,,,,,,,,,,
+image processing,image analysis,image,stereo image processing,image enhancement,,,,,,,,
+classification,classification methods,classification (of information),image classification,classification algorithm,,,,,,,,
+time series,time series analysis,times series,image time-series,,,,,,,,,
+machine learning,machine-learning,learning systems,deep learning,supervised learning,,,,,,,,
+neural networks,recurrent neural networks,convolutional neural networks,artificial neural networks,artificial neural network,neural-networks,artificial intelligence,,,,,,
+displacement,displacement measurement,,,,,,,,,,,
+land use/cover,land use,land cover,land cover mapping,land use and land cover,land cover maps,land-cover change,land-cover classification,land-use,land-cover,cover,,
+mapping,maps,mapping method,map,,,,,,,,,
+dataset,large dataset,data set,large datasets,,,,,,,,,
+segmentation,image segmentation,semantic segmentation,instance segmentation,panoptic segmentation,,,,,,,,
+radar,optical radar,space-based radar,radar measurement,radar data,radar imaging,synthetic aperture radar,radar altimetry,radar cross section,radar imagery,radar polarimetry,,
+reconstruction,image reconstruction,3d reconstruction,,,,,,,,,,
+sentinel,sentinel-1,sentinel-2,,,,,,,,,,
+gis,geographical information,geographical information systems,geographic information systems,geographic information,,,,,,,,
+digital humanities,computational humanities,computational humanity,heritage,digital heritage,cultural heritage,cultural heritages,,,,,,
+point cloud, 3d point cloud,point-clouds,lidar point clouds,,,,,,,,,
+buildings,3d building models,bim,3d buildings,,,,,,,,,
+image retrieval,cbir,content based retrieval,,,,,,,,,,
+clusterings,clustering algorithms,,,,,,,,,,,
+urban development,urban environment,urban environments,urban planning,urban morphology,urban,urban growth,3d urban modeling,urban areas,urban area,,,
+city model,city information model,3d city model,3d urban modeling,,,,,,,,,
+surface reconstruction,surfaces reconstruction,,,,,,,,,,,
+visualisation,visualization,data visualization,geo visualization,geo visualizations,,,,,,,,
+global positioning system,global navigation positioning system,global navigation satellite systems,,,,,,,,,,
+3d,3d modeling,three dimensional computer graphics,three-dimensional modeling,3d geometry,3-d environments,3-d-analysis,3d data,3d feature representation,3d models,3d scenes reconstruction,3d segmentation,3d surface
+information systems,information management,information use,,,,,,,,,,
+cityzen science,volunteered geographic information,cityzen science,vgi,,,,,,,,,
+uav,unmanned aerial vehicles (uav),unmanned vehicle,autonomous vehicles,,,,,,,,,
+crop,crop mapping,crop rotation,crop type mappings,wheat crop,crops,,,,,,,
+software,computer software,photogrammetric software,software engineering,open source software,computer software maintenance,,,,,,,
+antennas,microwave antennas,,,,,,,,,,,
+vegetation,vegetation mapping,normalized difference vegetation index,vegetation water contents (vwc),,,,,,,,,
+resolution,image resolution,spatial resolution,high spatial resolution,very high resolution,very high spatial resolutions,very high resolution (vhr) image,very-high spatial resolutions,,,,,
+road,road network,roads and streets,,,,,,,,,,
+simulation,simulation and analysis,extensive simulations,,,,,,,,,,

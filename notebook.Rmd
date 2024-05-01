@@ -65,6 +65,7 @@ Now, create the thematic map using the synonyms.
 #synonyms_file <- read.csv("synonyms.csv")
 synonyms_file <- scan("synonyms.csv",sep='\n', what = "", quiet = TRUE)
 synonyms_file <- gsub(",", "; ", synonyms_file)
+synonyms_file <- c(synonyms_file)
 res <- thematicMap(M_wos, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
 plot(res$map)
 ```
@@ -106,11 +107,17 @@ wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=N
   results=list(v=v,W=W, Words=Words)
   return(results)
 }
-resW <- wordlist(M=M_wos, Field="ID", n=250, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+resW <- wordlist(M=M_wos, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
 W <- resW$W
 Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1.6, color = 'random-dark')
+wordcloud2::wordcloud2(W, size = 1, color = 'random-dark',minRotation = -pi/6, maxRotation = -pi/6, rotateRatio = 1)
 ```
 
 
+```{r}
+resW <- wordlist(M=M_scopus, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+W <- resW$W
+Words <- resW$Words
+wordcloud2::wordcloud2(W, size = 1, color = 'random-dark',minRotation = -pi/6, maxRotation = -pi/6, rotateRatio = 1)
+```
 
