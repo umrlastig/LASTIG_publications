@@ -3,6 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 Load the lib (you might want to install it first).
+
 ```{r}
 library(bibliometrix)   ### load bibliometrix package
 ```
@@ -59,4 +60,57 @@ histResults <- histNetwork(M_wos, min.citations = 1, sep = ";")
 # Plot a historical co-citation network
 net <- histPlot(histResults, n=15, size = 20, labelsize=5)
 ```
+Now, create the thematic map using the synonyms.
+```{r}
+#synonyms_file <- read.csv("synonyms.csv")
+synonyms_file <- scan("synonyms.csv",sep='\n', what = "", quiet = TRUE)
+synonyms_file <- gsub(",", "; ", synonyms_file)
+res <- thematicMap(M_wos, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+plot(res$map)
+```
+
+The same but with the Scopus data.
+```{r}
+res <- thematicMap(M_scopus, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+plot(res$map)
+```
+```{r}
+wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=NULL){
+  switch(Field,
+         ID={v=tableTag(M,"ID", remove.terms  = remove.terms, synonyms = synonyms)},
+         DE={v=tableTag(M,"DE", remove.terms = remove.terms, synonyms = synonyms)},
+         TI={
+           if (!("TI_TM" %in% names(M))){
+             v=tableTag(M,"TI", ngrams=ngrams, remove.terms=remove.terms, synonyms = synonyms)
+             
+           }},
+         AB={if (!("AB_TM" %in% names(M))){
+           v=tableTag(M,"AB", ngrams=ngrams, remove.terms = remove.terms, synonyms = synonyms)
+         }},
+         WC={
+           v=tableTag(M,"WC")
+         }
+  )
+  names(v)=tolower(names(v))
+  #v=tableTag(values$M,"ID")
+  n=min(c(n,length(v)))
+  Words=data.frame(Terms=names(v)[1:n], Frequency=(as.numeric(v)[1:n]), stringsAsFactors = FALSE)
+  W=Words
+  switch(measure,
+         identity={},
+         sqrt={W$Frequency=sqrt(W$Frequency)},
+         log={W$Frequency=log(W$Frequency+1)},
+         log10={W$Frequency=log10(W$Frequency+1)}
+  )
+  
+  results=list(v=v,W=W, Words=Words)
+  return(results)
+}
+resW <- wordlist(M=M_wos, Field="ID", n=250, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+W <- resW$W
+Words <- resW$Words
+wordcloud2::wordcloud2(W, size = 1.6, color = 'random-dark')
+```
+
+
 
