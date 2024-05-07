@@ -60,13 +60,22 @@ histResults <- histNetwork(M_wos, min.citations = 1, sep = ";")
 # Plot a historical co-citation network
 net <- histPlot(histResults, n=15, size = 20, labelsize=5)
 ```
-Now, create the thematic map using the synonyms.
+Read the synonym file.
 ```{r}
 #synonyms_file <- read.csv("synonyms.csv")
 synonyms_file <- scan("synonyms.csv",sep='\n', what = "", quiet = TRUE)
 synonyms_file <- gsub(",", "; ", synonyms_file)
 synonyms_file <- c(synonyms_file)
+```
+
+Now, create the thematic map using the synonyms.
+```{r}
 res <- thematicMap(M_wos, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+plot(res$map)
+```
+Now, create the thematic map using the synonyms and the author's keywords.
+```{r}
+res <- thematicMap(M_wos, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
 plot(res$map)
 ```
 
@@ -75,6 +84,14 @@ The same but with the Scopus data.
 res <- thematicMap(M_scopus, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
 plot(res$map)
 ```
+
+The same but with the Scopus data and the author's keywords.
+```{r}
+res <- thematicMap(M_scopus, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+plot(res$map)
+```
+
+We add the function to create wordlists.
 ```{r}
 wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=NULL){
   switch(Field,
@@ -107,17 +124,42 @@ wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=N
   results=list(v=v,W=W, Words=Words)
   return(results)
 }
-resW <- wordlist(M=M_wos, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
-W <- resW$W
-Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1, color = 'random-dark',minRotation = -pi/6, maxRotation = -pi/6, rotateRatio = 1)
 ```
 
+Wordcloud with WoS and keywords plus.
+```{r}
+resW <- wordlist(M=M_wos, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+W <- resW$W
+write.csv(resW[["W"]], "/home/JPerret/data_wos.csv", row.names=FALSE)
+Words <- resW$Words
+wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+```
 
+Wordcloud with WoS and author's keywords.
+```{r}
+resW <- wordlist(M=M_wos, Field="DE", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+W <- resW$W
+write.csv(resW[["W"]], "/home/JPerret/data_wos_de.csv", row.names=FALSE)
+Words <- resW$Words
+wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+```
+
+Wordcloud with Scopus and keywords plus.
 ```{r}
 resW <- wordlist(M=M_scopus, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
 W <- resW$W
+write.csv(resW[["W"]], "/home/JPerret/data_scopus.csv", row.names=FALSE)
 Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1, color = 'random-dark',minRotation = -pi/6, maxRotation = -pi/6, rotateRatio = 1)
+wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
 ```
 
+Wordcloud with Scopus and author's keywords.
+```{r}
+resW <- wordlist(M=M_scopus, Field="DE", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+W <- resW$W
+write.csv(resW[["W"]], "/home/JPerret/data_scopus_de.csv", row.names=FALSE)
+Words <- resW$Words
+wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+```
+
+We are done!
