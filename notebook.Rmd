@@ -66,28 +66,30 @@ Read the synonym file.
 synonyms_file <- scan("synonyms.csv",sep='\n', what = "", quiet = TRUE)
 synonyms_file <- gsub(",", "; ", synonyms_file)
 synonyms_file <- c(synonyms_file)
+remove_file <- scan("remove.csv",sep='\n', what = "", quiet = TRUE)
+remove_file <- remove_file
 ```
 
 Now, create the thematic map using the synonyms.
 ```{r}
-res <- thematicMap(M_wos, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+res <- thematicMap(M_wos, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 Now, create the thematic map using the synonyms and the author's keywords.
 ```{r}
-res <- thematicMap(M_wos, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+res <- thematicMap(M_wos, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 
 The same but with the Scopus data.
 ```{r}
-res <- thematicMap(M_scopus, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+res <- thematicMap(M_scopus, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 
 The same but with the Scopus data and the author's keywords.
 ```{r}
-res <- thematicMap(M_scopus, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file)
+res <- thematicMap(M_scopus, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 
@@ -128,36 +130,36 @@ wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=N
 
 Wordcloud with WoS and keywords plus.
 ```{r}
-resW <- wordlist(M=M_wos, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+resW <- wordlist(M=M_wos, Field="ID", n=250, measure="identity", ngrams=1, synonyms = synonyms_file, remove.terms = remove_file)
 W <- resW$W
-write.csv(resW[["W"]], "/home/JPerret/data_wos.csv", row.names=FALSE)
+write.csv(resW[["W"]], "data_wos.csv", row.names=FALSE)
 Words <- resW$Words
 wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
 ```
 
 Wordcloud with WoS and author's keywords.
 ```{r}
-resW <- wordlist(M=M_wos, Field="DE", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+resW <- wordlist(M=M_wos, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
-write.csv(resW[["W"]], "/home/JPerret/data_wos_de.csv", row.names=FALSE)
+write.csv(resW[["W"]], "data_wos_de.csv", row.names=FALSE)
 Words <- resW$Words
 wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
 ```
 
 Wordcloud with Scopus and keywords plus.
 ```{r}
-resW <- wordlist(M=M_scopus, Field="ID", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+resW <- wordlist(M=M_scopus, Field="ID", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
-write.csv(resW[["W"]], "/home/JPerret/data_scopus.csv", row.names=FALSE)
+write.csv(resW[["W"]], "data_scopus.csv", row.names=FALSE)
 Words <- resW$Words
 wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
 ```
 
 Wordcloud with Scopus and author's keywords.
 ```{r}
-resW <- wordlist(M=M_scopus, Field="DE", n=500, measure="identity", ngrams=1, remove.terms = NULL, synonyms = synonyms_file)
+resW <- wordlist(M=M_scopus, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
-write.csv(resW[["W"]], "/home/JPerret/data_scopus_de.csv", row.names=FALSE)
+write.csv(resW[["W"]], "data_scopus_de.csv", row.names=FALSE)
 Words <- resW$Words
 wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
 ```
