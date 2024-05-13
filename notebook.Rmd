@@ -170,7 +170,7 @@ wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=N
 
 
 ```{r}
-resW <- wordlist(M=M_wos, Field="ID", n=250, measure="identity", ngrams=1, synonyms = synonyms_file, remove.terms = remove_file)
+resW <- wordlist(M=M_wos, Field="ID", n=150, measure="identity", ngrams=1, synonyms = synonyms_file, remove.terms = remove_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_wos.csv", row.names=FALSE)
 Words <- resW$Words
@@ -183,7 +183,7 @@ Wordcloud with WoS and keywords plus.
 
 
 ```{r}
-resW <- wordlist(M=M_wos, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
+resW <- wordlist(M=M_wos, Field="DE", n=150, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_wos_de.csv", row.names=FALSE)
 Words <- resW$Words
@@ -196,7 +196,7 @@ Wordcloud with WoS and author's keywords.
 
 
 ```{r}
-resW <- wordlist(M=M_scopus, Field="ID", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
+resW <- wordlist(M=M_scopus, Field="ID", n=150, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_scopus.csv", row.names=FALSE)
 Words <- resW$Words
@@ -208,7 +208,7 @@ Wordcloud with Scopus and keywords plus.
 <iframe src = "w3.html" width = "1000" height = "1000"></iframe> 
 
 ```{r}
-resW <- wordlist(M=M_scopus, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
+resW <- wordlist(M=M_scopus, Field="DE", n=150, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_scopus_de.csv", row.names=FALSE)
 Words <- resW$Words
