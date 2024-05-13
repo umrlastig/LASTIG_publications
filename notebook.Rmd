@@ -33,6 +33,7 @@ results_wos <- biblioAnalysis(M_wos, sep = ";")
 results_scopus <- biblioAnalysis(M_scopus, sep = ";")
 write.csv(results_wos$Sources, "sources_wos.csv", row.names=FALSE)
 write.csv(results_scopus$Sources, "sources_scopus.csv", row.names=FALSE)
+dev.new(width = 1000, height = 1000, unit = "px")
 ```
 
 ```{r}
@@ -191,64 +192,55 @@ wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=N
 }
 ```
 
-Wordcloud with WoS and keywords plus.
 
 ```{r}
 resW <- wordlist(M=M_wos, Field="ID", n=250, measure="identity", ngrams=1, synonyms = synonyms_file, remove.terms = remove_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_wos.csv", row.names=FALSE)
 Words <- resW$Words
-w1 <- wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+w1 <- wordcloud2::wordcloud2(W, size = 1.5, minRotation = 0, maxRotation = 0, rotateRatio = 1)#minRotation = -pi/2, maxRotation = -pi/2)
 saveWidget(w1, 'w1.html', selfcontained = T)
-#webshot('w1.html', 'w1.png', vwidth=700,vheight=500, delay = 5)
-#png('w1.png')
 ```
+
+Wordcloud with WoS and keywords plus.
 <iframe src = "w1.html" width = "1000" height = "1000"></iframe> 
 
-
-Wordcloud with WoS and author's keywords.
 
 ```{r}
 resW <- wordlist(M=M_wos, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_wos_de.csv", row.names=FALSE)
 Words <- resW$Words
-w2 <- wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+w2 <- wordcloud2::wordcloud2(W, size = 1.5, minRotation = 0, maxRotation = 0, rotateRatio = 1)#minRotation = -pi/2, maxRotation = -pi/2)
 saveWidget(w2, 'w2.html', selfcontained = T)
-#htmltools::includeHTML("w2.html")
-#w2
 ```
 
+Wordcloud with WoS and author's keywords.
 <iframe src = "w2.html" width = "1000" height = "1000"></iframe> 
 
-Wordcloud with Scopus and keywords plus.
 
 ```{r}
 resW <- wordlist(M=M_scopus, Field="ID", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_scopus.csv", row.names=FALSE)
 Words <- resW$Words
-w3 <- wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+w3 <- wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark', minRotation = 0, maxRotation = 0, rotateRatio = 1)
 saveWidget(w3, 'w3.html', selfcontained = T)
-#htmltools::includeHTML("w3.html")
-#w3
 ```
 
+Wordcloud with Scopus and keywords plus.
 <iframe src = "w3.html" width = "1000" height = "1000"></iframe> 
-
-Wordcloud with Scopus and author's keywords.
 
 ```{r}
 resW <- wordlist(M=M_scopus, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_scopus_de.csv", row.names=FALSE)
 Words <- resW$Words
-w4 <- wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+w4 <- wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark', minRotation = 0, maxRotation = 0, rotateRatio = 1)
 saveWidget(w4, 'w4.html', selfcontained = T)
-#htmltools::includeHTML("w4.html")
-#w4
 ```
 
+Wordcloud with Scopus and author's keywords.
 <iframe src = "w4.html" width = "1000" height = "1000"></iframe> 
 
 We are done!
