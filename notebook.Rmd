@@ -2,27 +2,45 @@
 title: "R Notebook"
 output: html_notebook
 ---
-Load the lib (you might want to install it first).
+
+Imports.
 
 ```{r}
+# Load the lib (you might want to install it first).
 library(bibliometrix)   ### load bibliometrix package
+library(htmlwidgets) 
+library(webshot)
+# install_phantomjs(
+#   version = "2.1.1",
+#   baseURL = "https://github.com/wch/webshot/releases/download/v0.3.1/",
+#   force = FALSE
+# )
 ```
 
 Import the wos and scopus publication files.
+
 ```{r}
 file_wos <- "wos_2018_2023.bib"
 file_scopus <- "scopus_2018_2024.bib"
 M_wos <- convert2df(file = file_wos, dbsource = "wos", format = "bibtex")
 M_scopus <- convert2df(file = file_scopus, dbsource = "scopus", format = "bibtex")
 ```
+
 First bibliometric analysis:
+
 ```{r}
 results_wos <- biblioAnalysis(M_wos, sep = ";")
 results_scopus <- biblioAnalysis(M_scopus, sep = ";")
+write.csv(results_wos$Sources, "sources_wos.csv", row.names=FALSE)
+write.csv(results_scopus$Sources, "sources_scopus.csv", row.names=FALSE)
 ```
 
 ```{r}
 plot(x = results_wos, k = 10, pause = FALSE)
+```
+
+```{r}
+plot(x = results_scopus, k = 10, pause = FALSE)
 ```
 
 ```{r}
@@ -31,11 +49,20 @@ cbind(CR$Cited[1:10])
 A <- cocMatrix(M_wos, Field = "SO", sep = ";")
 sort(Matrix::colSums(A), decreasing = TRUE)[1:10]
 ```
+
 ```{r}
 A <- cocMatrix(M_wos, Field = "CR", sep = ".  ")
 sort(Matrix::colSums(A), decreasing = TRUE)[1:10]
 ```
 
+```{r}
+library(data.table)
+data.table(results_wos$Sources)
+```
+
+```{r}
+data.table(results_scopus$Sources)
+```
 
 ```{r}
 # Create keyword co-occurrences network
@@ -43,9 +70,31 @@ sort(Matrix::colSums(A), decreasing = TRUE)[1:10]
 NetMatrix <- biblioNetwork(M_wos, analysis = "co-occurrences", network = "keywords", sep = ";")
 
 # Plot the network
-net=networkPlot(NetMatrix, normalize="association", weighted=T, n = 30, Title = "Keyword Co-occurrences", type = "fruchterman", size=T,edgesize = 5,labelsize=0.7)
+net=networkPlot(NetMatrix, normalize="association", weighted=T, n = 50, Title = "WoS Keyword Co-occurrences", type = "fruchterman", size=T, edgesize = 5,labelsize=0.7)
 ```
 
+```{r}
+# Create keyword co-occurrences network
+
+NetMatrix <- biblioNetwork(M_scopus, analysis = "co-occurrences", network = "keywords", sep = ";")
+
+# Plot the network
+net=networkPlot(NetMatrix, normalize="association", weighted=T, n = 50, Title = "Scopus Keyword Co-occurrences", type = "fruchterman", size=T, edgesize = 5,labelsize=0.7)
+```
+
+```{r}
+# Create classical article coupling network
+
+NetMatrix <- biblioNetwork(M_wos, analysis = "coupling", network = "references", sep = ";")
+
+# Plot the network
+net=networkPlot(NetMatrix,  normalize = "salton", weighted=NULL, n = 30, Title = "WoS Article' Coupling", type = "fruchterman", size=10,size.cex=T,remove.multiple=TRUE,labelsize=0.8,label.n=30,label.cex=F)
+```
+
+```{r}
+NetMatrix <- biblioNetwork(M_wos, analysis = "coupling", network = "authors", sep = ";")
+net=networkPlot(NetMatrix,  normalize = "salton", weighted=NULL, n = 30, Title = "WoS Authors' Coupling", type = "fruchterman", size=10,size.cex=T,remove.multiple=TRUE,labelsize=0.8,label.n=30,label.cex=F)
+```
 
 ```{r}
 # Conceptual Structure using keywords (method="CA")
@@ -54,13 +103,21 @@ CS <- conceptualStructure(M_wos,field="ID", method="CA", minDegree=4, clust=5, s
 ```
 
 ```{r}
+# Conceptual Structure using keywords (method="CA")
+
+CS <- conceptualStructure(M_scopus,field="ID", method="CA", minDegree=4, clust=5, stemming=FALSE, labelsize=10, documents=10)
+```
+
+```{r}
 # Create a historical citation network
-options(width=130)
+options(width=200)
 histResults <- histNetwork(M_wos, min.citations = 1, sep = ";")
 # Plot a historical co-citation network
-net <- histPlot(histResults, n=15, size = 20, labelsize=5)
+net <- histPlot(histResults, n=20, size = 10, labelsize=5)
 ```
+
 Read the synonym file.
+
 ```{r}
 #synonyms_file <- read.csv("synonyms.csv")
 synonyms_file <- scan("synonyms.csv",sep='\n', what = "", quiet = TRUE)
@@ -71,29 +128,35 @@ remove_file <- remove_file
 ```
 
 Now, create the thematic map using the synonyms.
+
 ```{r}
 res <- thematicMap(M_wos, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
+
 Now, create the thematic map using the synonyms and the author's keywords.
+
 ```{r}
 res <- thematicMap(M_wos, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 
 The same but with the Scopus data.
+
 ```{r}
 res <- thematicMap(M_scopus, field = "ID", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 
 The same but with the Scopus data and the author's keywords.
+
 ```{r}
 res <- thematicMap(M_scopus, field = "DE", n = 250, minfreq = 5, size = 0.5, repel = TRUE, synonyms = synonyms_file, remove.terms = remove_file)
 plot(res$map)
 ```
 
 We add the function to create wordlists.
+
 ```{r}
 wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=NULL){
   switch(Field,
@@ -129,39 +192,63 @@ wordlist <- function(M, Field, n, measure, ngrams, remove.terms=NULL, synonyms=N
 ```
 
 Wordcloud with WoS and keywords plus.
+
 ```{r}
 resW <- wordlist(M=M_wos, Field="ID", n=250, measure="identity", ngrams=1, synonyms = synonyms_file, remove.terms = remove_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_wos.csv", row.names=FALSE)
 Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+w1 <- wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+saveWidget(w1, 'w1.html', selfcontained = T)
+#webshot('w1.html', 'w1.png', vwidth=700,vheight=500, delay = 5)
+#png('w1.png')
 ```
+<iframe src = "w1.html" width = "1000" height = "1000"></iframe> 
+
 
 Wordcloud with WoS and author's keywords.
+
 ```{r}
 resW <- wordlist(M=M_wos, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_wos_de.csv", row.names=FALSE)
 Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+w2 <- wordcloud2::wordcloud2(W, size = 1.5, minRotation = -pi/2, maxRotation = -pi/2)
+saveWidget(w2, 'w2.html', selfcontained = T)
+#htmltools::includeHTML("w2.html")
+#w2
 ```
 
+<iframe src = "w2.html" width = "1000" height = "1000"></iframe> 
+
 Wordcloud with Scopus and keywords plus.
+
 ```{r}
 resW <- wordlist(M=M_scopus, Field="ID", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_scopus.csv", row.names=FALSE)
 Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+w3 <- wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+saveWidget(w3, 'w3.html', selfcontained = T)
+#htmltools::includeHTML("w3.html")
+#w3
 ```
 
+<iframe src = "w3.html" width = "1000" height = "1000"></iframe> 
+
 Wordcloud with Scopus and author's keywords.
+
 ```{r}
 resW <- wordlist(M=M_scopus, Field="DE", n=250, measure="identity", ngrams=1, remove.terms = remove_file, synonyms = synonyms_file)
 W <- resW$W
 write.csv(resW[["W"]], "data_scopus_de.csv", row.names=FALSE)
 Words <- resW$Words
-wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+w4 <- wordcloud2::wordcloud2(W, size = 1.5, color = 'random-dark',minRotation = 0, maxRotation = 0, rotateRatio = 1)
+saveWidget(w4, 'w4.html', selfcontained = T)
+#htmltools::includeHTML("w4.html")
+#w4
 ```
+
+<iframe src = "w4.html" width = "1000" height = "1000"></iframe> 
 
 We are done!
