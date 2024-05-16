@@ -92,11 +92,14 @@ CS <- conceptualStructure(M_scopus,field="ID", method="CA", minDegree=4, clust=5
 ```
 Create a historical citation network with WoS data:
 ```{r}
-options(width=200)
 histResults <- histNetwork(M_wos, min.citations = 1, sep = ";")
 # Plot a historical co-citation network
-net <- histPlot(histResults, n=20, size = 10, labelsize=5)
+options(repr.plot.width = 10, repr.plot.height =20) 
+png(filename="histNetwork.png", width=1000, height=1000)
+net <- histPlot(histResults, n=50, size = 4, labelsize=4)
+dev.off()
 ```
+![The resulting historical network](histNetwork.png)
 
 Read the synonym and ignored keywords files.
 ```{r}
