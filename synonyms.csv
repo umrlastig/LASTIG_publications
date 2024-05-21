@@ -10,7 +10,7 @@ buildings,3d building models,bim,3d buildings,building construction,building blo
 carbon,carbon sink,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 change,change detection algorithms,spatial and temporal changes,,,,,,,,,,,,,,,,,,,,,,,,,,,
 city model,city information model,3d city model,3d urban modeling,city models,citygml,city,city scale,cim,3d urban modeling,,,,,,,,,,,,,,,,,,,,
-cityzen science,volunteered geographic information,cityzen science,vgi,crowdsourcing,citizen sensing,citizen science,community science,crowd and community sourcing,crowd-sourced,crowdsourced gnss traces,crowdsourced gps traces,crowdsourced landmarks,crowdsourced routes,public-participation,,,,,,,,,,,,,,,
+citizen science,volunteered geographic information,cityzen science,vgi,crowdsourcing,citizen sensing,citizen science,community science,crowd and community sourcing,crowd-sourced,crowdsourced gnss traces,crowdsourced gps traces,crowdsourced landmarks,crowdsourced routes,public-participation,,,,,,,,,,,,,,,
 classification,classification methods,classification (of information),image classification,classification algorithm,automated classification,classification models,classification results,classification tasks,,,,,,,,,,,,,,,,,,,,,
 climate,climate change mitigation,climate data,climate information,climate modeling,climate monitoring,climate models,climate change,,,,,,,,,,,,,,,,,,,,,,
 data,large dataset,data set,large datasets,big data,dataset,data quality assessment,spatial data,benchmark datasets,database,high-dimensional data,datasets,large datasets hci/interfaces,,,,,,,,,,,,,,,,,
