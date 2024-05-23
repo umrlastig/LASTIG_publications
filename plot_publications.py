@@ -29,7 +29,7 @@ journal_df = journal_df.loc[journal_df.index[0:20]]
 
 print(journal_df.to_string())
 
-journal_df["color"] = journal_df.type.map({"national journal":"tab:green","journal":'tab:red', "proceedings":'tab:blue'})
+journal_df["color"] = journal_df.type.map({"national journal":"tab:orange","journal":'tab:blue', "proceedings":'tab:red'})
 journal_df["name"] = journal_df.name.map({
     "Revue Française de Photogrammétrie et de Télédétection":'RFPT',
     "ISPRS International Journal of Geo-Information":'IJGI',
@@ -70,8 +70,8 @@ plt.xticks(rotation=90)
 plt.tick_params(bottom = False)
 ax.spines[['right', 'top']].set_visible(False)
 # Creating legend with color box
-journal_box = mpatches.Patch(color='tab:red', label='Journaux internationaux', linewidth=12)
-national_journal_box = mpatches.Patch(color='tab:green', label='Journaux nationaux', linewidth=12)
-proceedings_box = mpatches.Patch(color='tab:blue', label='Actes de conférence', linewidth=12)
+journal_box = mpatches.Patch(color='tab:blue', label='Journaux internationaux', linewidth=12)
+national_journal_box = mpatches.Patch(color='tab:orange', label='Journaux nationaux', linewidth=12)
+proceedings_box = mpatches.Patch(color='tab:red', label='Actes de conférence', linewidth=12)
 plt.legend(handles=[journal_box,national_journal_box,proceedings_box], loc='upper right', frameon=False)
 plt.savefig('journals_conferences.svg', format='svg')
