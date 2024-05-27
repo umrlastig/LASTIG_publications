@@ -75,3 +75,20 @@ national_journal_box = mpatches.Patch(color='tab:orange', label='Journaux nation
 proceedings_box = mpatches.Patch(color='tab:red', label='Actes de conférence', linewidth=12)
 plt.legend(handles=[journal_box,national_journal_box,proceedings_box], loc='upper right', frameon=False)
 plt.savefig('journals_conferences.svg', format='svg')
+
+fig, ax = plt.subplots()
+
+dataset_df = pd.read_csv('dataset_stats.csv')
+dataset_df = dataset_df.sort_values(by=['downloads'], ascending=False)
+
+print(dataset_df.to_string())
+
+ax.bar(dataset_df.short_name, dataset_df.downloads, label=dataset_df.short_name, width=0.9,log=True)
+ax.set_ylabel('Nombre de téléchargements')
+# ax.set_title('Journals and conference proceedings')
+plt.xticks(rotation=90)
+plt.tick_params(bottom = False)
+ax.spines[['right', 'top']].set_visible(False)
+plt.savefig('dataset_stats.svg', format='svg')
+
+print(str(dataset_df.downloads.sum()))
